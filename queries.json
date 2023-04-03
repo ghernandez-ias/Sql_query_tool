@@ -1,0 +1,37 @@
+{
+    "campaign_to_team":
+    {
+        "content" : "use firewall;\nUPDATE ADV_ENTITY SET TEAM_ID=${new_team_id} WHERE ID IN(${campaign_id});",
+        "rollback": "use firewall;\nUPDATE ADV_ENTITY SET TEAM_ID=${old_team_id} WHERE ID IN(${campaign_id});"
+    },
+    "users_to_team":
+    {
+        "content": "use app_user;\nINSERT INTO `user_team` (`user_id`, `team_id`) VALUES ",
+        "rollback": "use app_user;\nDELETE FROM user_team WHERE user_id IN(${campaign_id}) AND team_id=${old_team_id};"
+    },
+    "disable_placements":
+    {
+        "content": "INSERT INTO `PLACEMENT_DISABLEMENT_LOG` (`PLACEMENT_ID`, `ADSERVER_LOOKUP_ID`, `DISABLED_FL`, `CREATED_BY`, `CREATED_ON`)\nVALUES\n",
+        "rollback": "use firewall;\nDELETE FROM `PLACEMENT_DISABLEMENT_LOG` where PLACEMENT_ID in(${campaign_id}) AND DISABLED_FL=${disabled_fl};"
+    },
+    "reset_user": 
+    {
+        "content": "use app_user;\nUPDATE app_user\nSET ui_state=NULL\nWHERE id=${user_id};", 
+        "rollback": "use app_user;\nUPDATE app_user\nSET ui_state=`{'currentTeamId':27070,'currentPackage':'PUBLISHER','filterSelections':{'mediaFormat':{'label':'Format','value':'mediaFormat','numberOfSelections':0,'mutuallyExclusive':false,'childGroup':'mediaFormats','options':{'display':{'label':'Display','selected':false,'value':'display'},'video':{'label':'Video','selected':false,'value':'video'}}},'mediaChannel':{'label':'Device Type','value':'mediaChannel','numberOfSelections':0,'mutuallyExclusive':false,'childGroup':'devices','options':{'desktop':{'label':'Desktop','selected':false,'value':'desktop'},'mobile':{'label':'Mobile','selected':false,'mapsToMultiple':['mobileWeb','mobileApp']},'tablet':{'label':'Tablet','selected':false,'mapsToMultiple':['tabletWeb','tabletApp']}}}},'filterSelectionTeam':27070,'gridDimensionsSelected':{'cutoff':{'name':'Show all tracked ads','value':'','cutoff':'0'},'category':{'cat':'inventory','name':'Ad Units','value':'adUnit','queryable':true,'queryKeys':['adUnitId','adUnitPath']}},'reportDateRange':{'name':'This Month','to':'2021-12-29T09:19:11.387Z','from':'2021-11-30T16:00:00.000Z','rsNamedPeriod':'thisMonth'},'customGridItemsSelected':{'cutoff':{'name':'Show all tracked ads','value':'','cutoff':'0'},'sort':'none','category':{'cat':'inventory','name':'Ad Units','value':'adUnit','queryable':true,'queryKeys':['adUnitId','adUnitPath']},'breakdown':{'value':'none'}}}''}`\nWHERE id=${user_id};"
+    },
+    "custom_viewability":
+    {
+        "content":"INSERT INTO CUSTOM_VIEWABILITY_TEAM (`TEAM_ID`, `CUSTOM_VIEWABILITY_ID`, `MONITORING_FL`, `CREATED_ON`, `CREATED_BY`)\nVALUES\n",
+        "rollback":"use firewall;\nDELETE FROM CUSTOM_VIEWABILITY_TEAM\nWHERE TEAM_ID in (${team_id})\nAND CUSTOM_VIEWABILITY_ID = ${viewability_id};"
+    },
+    "pub_entity":
+    {
+        "content":"use firewall;\nUPDATE PUB_ENTITY\nSET LAST_HIT_DATE = NOW(), ACTIVE_FLAG = 1\nWHERE ID IN (${pub_entity_id});",
+        "rollback":"use firewall;\nUPDATE PUB_ENTITY\nSET LAST_HIT_DATE = '2022-07-19', ACTIVE_FLAG = 0\nWHERE ID IN (${pub_entity_id});"
+    },
+    "placement_name":
+    {
+        "content":"USE firewall;\nUPDATE PLACEMENT SET NAME = ${placement_name} WHERE `ID` = ${placement_id};",
+        "rollback":"USE firewall;\nUPDATE PLACEMENT SET NAME = ${placement_name}  WHERE ID = $placement_id;"
+    }
+}

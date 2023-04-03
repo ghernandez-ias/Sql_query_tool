@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/styles.css">
+        <title>SQL QUERY BUILDER</title>
+    </head>
+
+    <body onload="default_func">
+      <center>
+          <a href="index.html"><img src="images/logo.svg" ></a> </center>
+          <br>
+          <br>
+          <div class="center">
+              <center><h1>SQL Query Builder</h1>
+              <label for="fname">Jira Ticket Number:</label>
+              <input type="text" id="jiraid" name="jiraid" required><label for="fname"> E.g. ( TEOM-XXXX )</label><br>
+              <div id="lbl_jira_id_error">
+                  <p><label id="fill_ticket">Please fill out this field.</label></p>
+              </div>
+
+          <p><label id="lbl_select">Select SQL Query Type:</label></p>
+          <div class="selection">
+              <select id="mySelect" onchange='getIndex();'' name="mySelect">
+                <option disabled selected value> -- Select an option -- </option>
+                <option>Move Campaign To New Team</option>
+                <option>Bulk Assign Users to New Team</option>
+                <option>Disable Placements</option>
+                <option>Reset User</option>
+                <option>Enable Custom Viewability FW Team</option>
+                <option>Update Active Flag for Pub Entity</option>
+                <option>Update Placement Name</option>
+              </select>
+            <br>
+          </div>
+
+
+
+        <! -- Move Campaign To New Team -- >
+
+        <form>
+          <p><label id="lbl_camp_tags" style="font-size:26px;">Are the tags for this campaign already generated?</label></p>
+          <br>
+          <input type="radio" onclick="return handleRadioClick(this);" name="CampaignTags" id="yes"><label id="lbl_yes" >Yes</label><br> 
+          <input type="radio" onclick="return handleRadioClick(this);" name="CampaignTags" id="no"><label id="lbl_no" >No</label>
+
+        </form>
+
+        <form id="forms">
+          <div id="group__campaign">
+              <p><label id="lbl_camp_id">ADV Entity Ids</label></p>
+              <div class="form__group-input">
+                  <input class="form__input" type="text" id="campaign_id" name="campaign_id">
+              </div>
+              <p><label id="form__input-error" class="form__input-error">For multiple IDs separate them with commas with no spaces and no letters </label></p>
+          </div>
+          <br>
+    
+          <div id="group__old-team">
+              <p><label id="lbl_old_team">Current Team Id</label></p>
+              <div class="form__group-input">
+                  <input class="form__input" type="text" id="old_team_id" name="old_team_id" required>
+              </div>
+              <p><label id="form__input-error" class="form__input-error">For multiple IDs separate them with commas with no spaces and no letters </label></p>
+          </div>
+    
+          <br>
+    
+          <div id="group__new-team">
+              <p><label id="lbl_new_team">New Team Id</label></p>
+              <div class="form__group-input">
+                  <input class="form__input" type="text" id="new_team_id" name="new_team_id" required>
+              </div>
+              <p><label id="form__input-error" class="form__input-error">For multiple IDs separate them with commas with no spaces and no letters </label></p>
+          </div>
+  
+
+          <div id="group__disable">
+            <p><label id="lbl_disabled">Disabled Fl</label></p>
+            <div class="form__group-input">
+                <input class="form__input" type="text" id="disabled_fl" name="disabled_fl" required>
+            </div>
+          </div>
+
+          <div id="group__created_by">
+            <p><label id="lbl_created_by">Created by</label></p>
+            <div class="form__group-input">
+                <input class="form__input" type="text" id="created_by" name="created_by" required>
+            </div>
+          </div>
+
+          <div id="group__name">
+            <p><label id="lbl_name">Placement Name</label></p>
+            <div class="form__group-input">
+                <input class="placement_name_input" type="text" id="placement_name" name="placement_name" required>
+            </div>
+
+          </div>
+        </form>
+
+        <div class="form__message" id="form__message">
+          <p>Error: Please correct the wrong fields</p>
+        </div>
+        <br>
+
+        <input id="sub_button" type="submit" value="Generate SQL" onclick="return click_submit();">
+
+
+        <p id="demo"></p>
+
+      </center>
+
+<script>
+
+
+function default_func(flag,id){
+
+//alert(flag);
+
+
+
+
+sub_button = document.getElementById("sub_button");
+sub_button = document.getElementById("sub_button");
+
+lbl_cmp_tags = document.getElementById("lbl_camp_tags");
+radio_yes = document.getElementById("yes");
+radio_no = document.getElementById("no");
+lbl_yes = document.getElementById("lbl_yes");
+lbl_no = document.getElementById("lbl_no");
+
+lbl_cmp = document.getElementById("lbl_camp_id");
+lbl_old_tm = document.getElementById("lbl_old_team");
+lbl_new_tm = document.getElementById("lbl_new_team");
+
+campaign_id = document.getElementById("campaign_id");
+old_team_id = document.getElementById("old_team_id");
+new_team_id = document.getElementById("new_team_id");
+
+jiraid = document.getElementById('jiraid');
+jiraiderror = document.getElementById('lbl_jira_id_error');
+
+
+
+
+if(flag=='show'){
+
+if(id=='1'){
+
+    campaign_id.value='';
+    old_team_id.value='';
+    new_team_id.value='';
+
+    lbl_cmp.innerHTML='ADV Entity Ids';
+    lbl_old_tm.innerHTML='Current Team Id';
+    lbl_new_tm.innerHTML='New Team Id';
+
+    lbl_cmp.style.display='block';
+    lbl_old_tm.style.display='block';
+    lbl_new_tm.style.display='block';
+    campaign_id.style.display='block';
+    old_team_id.style.display='block';
+    new_team_id.style.display='block';
+    sub_button.style.display='block';
+    lbl_cmp_tags.innerHTML='Are the tags for this campaign already generated?';
+
+}else if(id=='2'){
+
+    lbl_cmp.innerHTML='User Id';
+    lbl_old_tm.innerHTML='Team Id';
+
+    campaign_id.value='';
+    old_team_id.value='';
+
+    lbl_cmp.style.display='block';
+    lbl_old_tm.style.display='block';
+
+    campaign_id.style.display='block';
+    old_team_id.style.display='block';
+    sub_button.style.display='block';
+
+
+}else if(id == '3'){
+    lbl_cmp.innerHTML="Placement ID";
+    lbl_old_tm.innerHTML="Adserver Lookup ID";
+
+    campaign_id.value = "";
+    old_team_id.value = "";
+    disabled_fl.value = "";
+    created_by.value = "";
+
+    lbl_cmp.style.display="block";
+    lbl_old_tm.style.display="block";
+    lbl_disabled.style.display = "block";
+    lbl_created_by.style.display = "block";
+
+    campaign_id.style.display ="block";
+    old_team_id.style.display = "block";
+    disabled_fl.style.display = "block";
+    created_by.style.display = "block";
+    sub_button.style.display="block";
+
+}else if(id == '4'){
+  lbl_cmp.innerHTML = "User ID";
+
+  campaign_id.value = "";
+
+  lbl_cmp.style.display="block";
+
+  campaign_id.style.display ="block";
+  sub_button.style.display="block";
+
+}else if(id == '5'){
+  lbl_cmp.innerHTML = "Team ID";
+  lbl_old_tm.innerHTML = "Custom Viewability ID";
+  lbl_disabled.innerHTML = "Monitoring FL";
+
+  campaign_id.value = "";
+  old_team_id.value = "";
+  disabled_fl.value = "";
+  created_by.value = "";
+
+  lbl_cmp.style.display = "block";
+  lbl_old_tm.style.display = "block";
+  lbl_disabled.style.display = "block";
+  lbl_created_by.style.display = "block";
+  
+
+  campaign_id.style.display = "block";
+  old_team_id.style.display = "block";
+  disabled_fl.style.display = "block";
+  created_by.style.display = "block";
+  sub_button.style.display = "block";
+}else if(id == '6'){
+  lbl_cmp.innerHTML = "Pub Entity ID";
+
+  campaign_id.value = "";
+
+  lbl_cmp.style.display = "block";
+
+  campaign_id.style.display = "block";
+  sub_button.style.display = "block";
+}else if(id == '7'){
+  lbl_cmp.innerHTML = "Placement ID";
+
+  campaign_id.value = "";
+
+  lbl_cmp.style.display = "block";
+  lbl_name.style.display = "block";
+
+  campaign_id.style.display = "block";
+  placement_name.style.display = "block";
+
+  sub_button.style.display = "block";
+
+}
+
+
+}else{
+
+lbl_cmp_tags.style.display='none';
+radio_yes.style.display='none';
+radio_no.style.display='none';
+lbl_yes.style.display='none';
+lbl_no.style.display='none';
+
+lbl_cmp.style.display='none';
+lbl_old_tm.style.display='none';
+lbl_new_tm.style.display='none';
+lbl_disabled.style.display = "none";
+lbl_created_by.style.display = "none";
+lbl_name.style.display = "none";
+
+campaign_id.style.display='none';
+old_team_id.style.display='none';
+new_team_id.style.display='none';
+disabled_fl.style.display = "none";
+created_by.style.display = "none";
+placement_name.style.display = "none";
+sub_button.style.display='none';
+
+
+  }
+
+
+}
+
+
+
+window.onload = function() {
+  default_func('hide');
+
+//setInputFilter(document.getElementById("campaign_id"), function(value) {
+  //return /^[0-9,]+$/.test(value);
+  //return /^\d*\.?\d*$/.test(value); // Allow digits and '.' only, using a RegExp.
+  //return /^\d*\,?\d*$/.test(value); // Allow digits and '.' only, using a RegExp.
+//}, "Only digits and ',' are allowed");
+  //alert(document.getElementById("lbl_camp_id"))
+};
+</script>
+
+</div>
+<script src="js/index.js"></script>
+</body>
+</html>
+
+
