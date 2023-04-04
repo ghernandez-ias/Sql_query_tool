@@ -12,7 +12,7 @@
     "disable_placements":
     {
         "content": "INSERT INTO `PLACEMENT_DISABLEMENT_LOG` (`PLACEMENT_ID`, `ADSERVER_LOOKUP_ID`, `DISABLED_FL`, `CREATED_BY`, `CREATED_ON`)\nVALUES\n",
-        "rollback": "use firewall;\nDELETE FROM `PLACEMENT_DISABLEMENT_LOG` where PLACEMENT_ID in(${campaign_id}) AND DISABLED_FL=${disabled_fl};"
+        "rollback": "use firewall;\nDELETE FROM `PLACEMENT_DISABLEMENT_LOG` where PLACEMENT_ID in(${campaign_id}) AND DISABLED_FL=0"
     },
     "reset_user": 
     {

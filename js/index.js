@@ -230,20 +230,18 @@ function click_submit(){
 
   }else if(userSelection=='3' && validation()){
     var queries = [];
-    //sqlContent = "use firewall;\nINSERT INTO `PLACEMENT_DISABLEMENT_LOG` (`PLACEMENT_ID`, `ADSERVER_LOOKUP_ID`, `DISABLED_FL`, `CREATED_BY`, `CREATED_ON`) ";
     const array = campaign_id.value.split(",");
     tb = "use firewall;\n";
     queries.push(tb);
-    //query_template = "INSERT INTO `PLACEMENT_DISABLEMENT_LOG` (`PLACEMENT_ID`, `ADSERVER_LOOKUP_ID`, `DISABLED_FL`, `CREATED_BY`, `CREATED_ON`)\nVALUES\n";
     queries.push(myData.disable_placements.content);
     var l = array.length;
     for (let i = 0; i< array.length; i++){
       if(l > 1){
-          sqlContent = "      ("+array[i]+","+old_team_id.value+","+disabled_fl.value+","+created_by.value+", Now()),\n";
+          sqlContent = "      ("+array[i]+","+old_team_id.value+",0,48344,Now()),\n";
           queries.push(sqlContent);
           l = l - 1;
       }else{
-        sqlContent = "      ("+array[i]+","+old_team_id.value+","+disabled_fl.value+","+created_by.value+", Now());\n";
+        sqlContent = "      ("+array[i]+","+old_team_id.value+",0,48344,Now());\n";
         queries.push(sqlContent);
       }
     }
@@ -288,11 +286,11 @@ function click_submit(){
     var l = array.length;
     for (let i = 0; i< array.length; i++){
       if(l>1){
-        sqlContent = "      ("+array[i]+","+old_team_id.value+","+disabled_fl.value+",now(),"+created_by.value+")\n";
+        sqlContent = "      ("+array[i]+","+old_team_id.value+",0,now(),48344)\n";
         queries.push(sqlContent);
         l = l-1;
       }else{
-        sqlContent = "      ("+array[i]+","+old_team_id.value+","+disabled_fl.value+",now(),"+created_by.value+");\n";
+        sqlContent = "      ("+array[i]+","+old_team_id.value+",0,now(),48344);\n";
         queries.push(sqlContent);
       }
     }
