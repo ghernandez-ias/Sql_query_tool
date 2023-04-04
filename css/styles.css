@@ -71,17 +71,27 @@ label{
     font-size: 0.9rem;
     border-radius: 5px;
 }
-#lbl_name{
+#lbl_old_name{
   text-align: left;
   margin-left: 30%;
   margin-top: -10%;
+}
+#lbl_name{
+  text-align: left;
+  margin-left: 30%;
+  margin-top: 10%;
+}
+.old_placement_input{
+  width: 40%;
+  height: 80px;
+  font-family: "Quicksand", sans-serif;
 }
 .placement_name_input{
   width: 40%;
   height: 80px;
   font-family: "Quicksand", sans-serif;
-  margin-bottom: 10px;
 }
+
 
 input[type=submit] {
   padding: 6px 20px;

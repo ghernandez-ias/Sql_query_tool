@@ -31,7 +31,7 @@
     },
     "placement_name":
     {
-        "content":"USE firewall;\nUPDATE PLACEMENT SET NAME = ${placement_name} WHERE `ID` = ${placement_id};",
-        "rollback":"USE firewall;\nUPDATE PLACEMENT SET NAME = ${placement_name}  WHERE ID = $placement_id;"
+        "content":"UPDATE PLACEMENT SET NAME = '${placement_name}' WHERE `ID` = ${placement_id};\n",
+        "rollback":"UPDATE PLACEMENT SET NAME = '${placement_name}'  WHERE `ID` = ${placement_id};\n"
     }
 }

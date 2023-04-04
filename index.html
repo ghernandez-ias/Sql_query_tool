@@ -88,8 +88,15 @@
             </div>
           </div>
 
+          <div id="group__old_name">
+            <p><label id="lbl_old_name">Old Placement Name</label></p>
+            <div class="form__group-input">
+                <input class="old_placement_input" type="text" id="old_placement" name="old_placement" required>
+            </div>
+          </div>
+
           <div id="group__name">
-            <p><label id="lbl_name">Placement Name</label></p>
+            <p><label id="lbl_name">New Placement Name</label></p>
             <div class="form__group-input">
                 <input class="placement_name_input" type="text" id="placement_name" name="placement_name" required>
             </div>
@@ -245,9 +252,11 @@ if(id=='1'){
   campaign_id.value = "";
 
   lbl_cmp.style.display = "block";
+  lbl_old_name.style.display = "block";
   lbl_name.style.display = "block";
 
   campaign_id.style.display = "block";
+  old_placement.style.display = "block";
   placement_name.style.display = "block";
 
   sub_button.style.display = "block";
@@ -269,6 +278,8 @@ lbl_new_tm.style.display='none';
 lbl_disabled.style.display = "none";
 lbl_created_by.style.display = "none";
 lbl_name.style.display = "none";
+lbl_old_name.style.display = "none";
+
 
 campaign_id.style.display='none';
 old_team_id.style.display='none';
@@ -276,6 +287,7 @@ new_team_id.style.display='none';
 disabled_fl.style.display = "none";
 created_by.style.display = "none";
 placement_name.style.display = "none";
+old_placement.style.display = "none";
 sub_button.style.display='none';
 
 

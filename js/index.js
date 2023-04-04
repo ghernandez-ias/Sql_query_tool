@@ -323,6 +323,45 @@ function click_submit(){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
+  }else if(userSelection == '7' && validation()){
+    var queries = []
+    var queries_rollback = []
+
+    tb = "USE firewall;\n"
+    queries.push(tb);
+    queries_rollback.push(tb);
+
+    const id_array = campaign_id.value.split(",");
+    const id_old_placement = old_placement.value.split(",");
+    const id_new_placement = placement_name.value.split(",");
+
+    if(id_array.length == id_old_placement.length && id_array.length == id_new_placement.length){
+      for(let i = 0; i< id_array.length; i++){
+        sqlContent = myData.placement_name.content.replace("${placement_name}", trimfield(id_new_placement[i])).replace("${placement_id}", id_array[i]);
+        queries.push(sqlContent);
+
+        sqlRollbackContent = myData.placement_name.rollback.replace("${placement_name}", trimfield(id_old_placement[i])).replace("${placement_id}", id_array[i]);
+        queries_rollback.push(sqlRollbackContent);
+      }
+      new_queries = queries.join("");
+      bbSQL = new Blob([new_queries], { type: "text/plain" });
+      a = document.createElement("a");
+      a.download = trimfield(jiraid.value)+"_Firewall_Update.sql";
+      a.href = window.URL.createObjectURL(bbSQL);
+      a.click();
+
+      new_rollback = queries.join("");
+      bbSQL = new Blob([queries_rollback], { type: "text/plain" });
+      a = document.createElement("a");
+      a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
+      a.href = window.URL.createObjectURL(bbSQL);
+      a.click();
+
+    }else{
+      alert('Please make sure all entries have the same length');
+      return false;
+    }
+
   }
 
 }
