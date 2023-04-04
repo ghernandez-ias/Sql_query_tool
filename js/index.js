@@ -33,6 +33,8 @@ const inputs = document.querySelectorAll("#forms input");
 var lbl_error = document.getElementById("form-input-error");
 let regex = /^\d+(,\d+)*$/;
 
+let regex_viewability = /^\d*$/;
+
 
 let myData;
 
@@ -68,6 +70,8 @@ const validateForm = (e) =>{
       case "new_team_id":
               validateField(regex, e.target, "new-team");
       break;
+      case "disabled_fl":
+              validateField(regex_viewability, e.target, "disable")
     }
 };
 const validateField = (regex, input, field) =>{
@@ -286,11 +290,11 @@ function click_submit(){
     var l = array.length;
     for (let i = 0; i< array.length; i++){
       if(l>1){
-        sqlContent = "      ("+array[i]+","+old_team_id.value+",0,now(),48344)\n";
+        sqlContent = "      ("+array[i]+","+disabled_fl.value+",0,now(),48344)\n";
         queries.push(sqlContent);
         l = l-1;
       }else{
-        sqlContent = "      ("+array[i]+","+old_team_id.value+",0,now(),48344);\n";
+        sqlContent = "      ("+array[i]+","+disabled_fl.value+",0,now(),48344);\n";
         queries.push(sqlContent);
       }
     }
@@ -301,7 +305,7 @@ function click_submit(){
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
 
-    sqlRollbackContent = myData.custom_viewability.rollback.replace("${team_id}", trimfield(campaign_id.value)).replace("${viewability_id}", trimfield(old_team_id.value));
+    sqlRollbackContent = myData.custom_viewability.rollback.replace("${team_id}", trimfield(campaign_id.value)).replace("${viewability_id}", trimfield(disabled_fl.value));
     bbSQL = new Blob([sqlRollbackContent ], { type: "text/plain" });
     a = document.createElement("a");
     a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";

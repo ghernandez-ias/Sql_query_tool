@@ -79,6 +79,7 @@
             <div class="form__group-input">
                 <input class="form__input" type="text" id="disabled_fl" name="disabled_fl" required>
             </div>
+            <p><label id="form__input-error" class="form__input-error">Only type one id without leaving spaces and no letters</label></p>
           </div>
 
           <div id="group__created_by">
@@ -214,17 +215,16 @@ if(id=='1'){
 
 }else if(id == '5'){
   lbl_cmp.innerHTML = "Team ID";
-  lbl_old_tm.innerHTML = "Custom Viewability ID";
-  lbl_disabled.innerHTML = "Monitoring FL";
+  lbl_disabled.innerHTML = "Custom Viewability ID";
 
   campaign_id.value = "";
-  old_team_id.value = "";
+  disabled_fl.value = "";
 
   lbl_cmp.style.display = "block";
-  lbl_old_tm.style.display = "block";
+  lbl_disabled.style.display = "block";
   
   campaign_id.style.display = "block";
-  old_team_id.style.display = "block";
+  disabled_fl.style.display = "block";
   sub_button.style.display = "block";
 }else if(id == '6'){
   lbl_cmp.innerHTML = "Pub Entity ID";
