@@ -195,7 +195,7 @@ function click_submit(){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
-    resetForm();
+    location.reload();
 
   }else if(userSelection=='2' && validation()){
 
@@ -229,7 +229,7 @@ function click_submit(){
     a.click();
 
 
-
+    location.reload();
 
 
   }else if(userSelection=='3' && validation()){
@@ -263,6 +263,7 @@ function click_submit(){
     a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
+    location.reload();
   }else if(userSelection=='4' && validation()){
     sqlContent = myData.reset_user.content.replace('${user_id}', trimfield(campaign_id.value));
 
@@ -279,6 +280,7 @@ function click_submit(){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
+    location.reload();
   }else if(userSelection == '5' && validation()){
     var queries = [];
     const array = campaign_id.value.split(",");
@@ -311,6 +313,7 @@ function click_submit(){
     a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
+    location.reload();
   }else if(userSelection == '6' && validation()){
     sqlContent = myData.pub_entity.content.replace("${pub_entity_id}", trimfield(campaign_id.value));
     bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
@@ -325,6 +328,7 @@ function click_submit(){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
+    location.reload();
   }else if(userSelection == '7' && validation()){
     var queries = []
     var queries_rollback = []
@@ -358,6 +362,7 @@ function click_submit(){
       a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
       a.href = window.URL.createObjectURL(bbSQL);
       a.click();
+      location.reload();
 
     }else{
       alert('Please make sure all entries have the same length');
