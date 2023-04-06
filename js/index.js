@@ -157,32 +157,7 @@ function joinInsertIDs(item, index) {
 
 }
 
-function resetForm(){
-  var form_reset = document.getElementById('forms');
-  form_reset.reset()
-
-  for (const prop in fields) {
-    fields[prop] = false; //
-  }
-}
-
-
-
-
-// - Function triggered when Generate Query button clicked -- //
-
-function click_submit(){
-  //const message = eval(s1 + myData + s2);
-  //console.log(message)
-
-  if(userSelection=='1' && validation()){
-
-    //sqlContent = "use firewall;\nUPDATE ADV_ENTITY SET TEAM_ID="+trimfield(new_team_id.value)+" WHERE ID IN("+trimfield(campaign_id.value)+");";
-    //sqlRollbackContent = "use firewall;\nUPDATE ADV_ENTITY SET TEAM_ID="+trimfield(old_team_id.value)+" WHERE ID IN("+trimfield(campaign_id.value)+");";
-    
-    sqlContent = myData.campaign_to_team.content.replace("${new_team_id}", trimfield(new_team_id.value)).replace("${campaign_id}", trimfield(campaign_id.value));
-    sqlRollbackContent = myData.campaign_to_team.rollback.replace("${old_team_id}", trimfield(old_team_id.value)).replace("${campaign_id}", trimfield(campaign_id.value));
-    
+function generateFiles(sqlContent,sqlRollbackContent){
     bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
     a = document.createElement('a');
     a.download = trimfield(jiraid.value)+'_Firewall_Update.sql';
@@ -196,6 +171,18 @@ function click_submit(){
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
     location.reload();
+}
+
+// - Function triggered when Generate Query button clicked -- //
+
+function click_submit(){
+
+  if(userSelection=='1' && validation()){
+    
+    sqlContent = myData.campaign_to_team.content.replace("${new_team_id}", trimfield(new_team_id.value)).replace("${campaign_id}", trimfield(campaign_id.value));
+    sqlRollbackContent = myData.campaign_to_team.rollback.replace("${old_team_id}", trimfield(old_team_id.value)).replace("${campaign_id}", trimfield(campaign_id.value));
+  
+    generateFiles(sqlContent, sqlRollbackContent);
 
   }else if(userSelection=='2' && validation()){
 
@@ -206,30 +193,10 @@ function click_submit(){
     userArray.forEach(joinInsertIDs);
 
     var result = insertValStr.substring(0,insertValStr.length-2)+";";
-
-    //sqlContent = "use app_user;\nINSERT INTO `user_team` (`user_id`, `team_id`) VALUES "+result;
-    
-    //sqlRollbackContent = "use app_user;\nDELETE FROM user_team WHERE user_id IN("+trimfield(campaign_id.value)+") AND team_id="+trimfield(old_team_id.value)+";";
-
-    // document.getElementById("demo").innerHTML = sqlRollbackContent;
     sqlContent = myData.users_to_team.content + result;
     sqlRollbackContent = myData.users_to_team.rollback.replace("${campaign_id}", trimfield(campaign_id.value)).replace("${old_team_id}", trimfield(old_team_id.value));
 
-    bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-
-
-    bbSQL = new Blob([sqlRollbackContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-
-
-    location.reload();
+    generateFiles(sqlContent, sqlRollbackContent);
 
 
   }else if(userSelection=='3' && validation()){
@@ -250,37 +217,17 @@ function click_submit(){
       }
     }
     new_queries = queries.join("");
-    bbSQL = new Blob([new_queries], { type: "text/plain" });
-    a = document.createElement("a");
-    a.download = trimfield(jiraid.value)+"_Firewall_Update.sql";
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-
-    //sqlRollbackContent = "use firewall;\nDELETE FROM `PLACEMENT_DISABLEMENT_LOG` where PLACEMENT_ID in("+trimfield(campaign_id.value)+") AND DISABLED_FL="+trimfield(disabled_fl.value)+";";
     sqlRollbackContent = myData.disable_placements.rollback.replace("${campaign_id}", trimfield(campaign_id.value)).replace("${disabled_fl}", trimfield(disabled_fl.value));
-    bbSQL = new Blob([sqlRollbackContent ], { type: "text/plain" });
-    a = document.createElement("a");
-    a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-    location.reload();
+
+    generateFiles(new_queries, sqlRollbackContent);
+
   }else if(userSelection=='4' && validation()){
     sqlContent = myData.reset_user.content.replace('${user_id}', trimfield(campaign_id.value));
-
-    bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-
     sqlRollbackContent = myData.reset_user.rollback.replace('${user_id}', trimfield(campaign_id.value));
 
-    bbSQL = new Blob([sqlRollbackContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-    location.reload();
+    generateFiles(sqlContent, sqlRollbackContent);
+
+
   }else if(userSelection == '5' && validation()){
     var queries = [];
     const array = campaign_id.value.split(",");
@@ -301,34 +248,16 @@ function click_submit(){
       }
     }
     new_queries = queries.join("");
-    bbSQL = new Blob([new_queries], { type: "text/plain" });
-    a = document.createElement("a");
-    a.download = trimfield(jiraid.value)+"_Firewall_Update.sql";
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-
     sqlRollbackContent = myData.custom_viewability.rollback.replace("${team_id}", trimfield(campaign_id.value)).replace("${viewability_id}", trimfield(disabled_fl.value));
-    bbSQL = new Blob([sqlRollbackContent ], { type: "text/plain" });
-    a = document.createElement("a");
-    a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-    location.reload();
+
+    generateFiles(new_queries, sqlRollbackContent);
+
   }else if(userSelection == '6' && validation()){
     sqlContent = myData.pub_entity.content.replace("${pub_entity_id}", trimfield(campaign_id.value));
-    bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-
     sqlRollbackContent = myData.pub_entity.rollback.replace("${pub_entity_id}", trimfield(campaign_id.value));
-    bbSQL = new Blob([sqlRollbackContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-    location.reload();
+
+    generateFiles(sqlContent, sqlRollbackContent);
+
   }else if(userSelection == '7' && validation()){
     var queries = []
     var queries_rollback = []
@@ -350,19 +279,9 @@ function click_submit(){
         queries_rollback.push(sqlRollbackContent);
       }
       new_queries = queries.join("");
-      bbSQL = new Blob([new_queries], { type: "text/plain" });
-      a = document.createElement("a");
-      a.download = trimfield(jiraid.value)+"_Firewall_Update.sql";
-      a.href = window.URL.createObjectURL(bbSQL);
-      a.click();
-
       new_rollback = queries.join("");
-      bbSQL = new Blob([queries_rollback], { type: "text/plain" });
-      a = document.createElement("a");
-      a.download = trimfield(jiraid.value)+"_Firewall_Update_ROLLBACK.sql";
-      a.href = window.URL.createObjectURL(bbSQL);
-      a.click();
-      location.reload();
+
+      generateFiles(new_queries, new_rollback);
 
     }else{
       alert('Please make sure all entries have the same length');
