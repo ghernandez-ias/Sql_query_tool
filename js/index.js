@@ -33,7 +33,7 @@ const inputs = document.querySelectorAll("#forms input");
 var lbl_error = document.getElementById("form-input-error");
 let regex = /^\d+(,\d+)*$/;
 
-let regex_viewability = /^\d*$/;
+let regex_viewability = /^\d+$/;
 
 
 let myData;
@@ -129,22 +129,37 @@ radio_yes.style.display='block';
 radio_no.style.display='block';
 lbl_yes.style.display='block';
 lbl_no.style.display='block';
+document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
 
   }else if(userSelection=='2'){
 
     default_func('show','2');
-
+    document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
 
   }else if(userSelection == '3'){
     default_func('show', '3');
+    document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
   }else if(userSelection == '4'){
     default_func('show', '4');
+    document.querySelector(`#group__old-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
   }else if(userSelection == '5'){
     default_func('show', '5');
+    document.querySelector(`#group__old-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
   }else if(userSelection == '6'){
     default_func('show', '6');
+    document.querySelector(`#group__old-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
   }else if(userSelection == '7'){
     default_func('show', '7');
+    document.querySelector(`#group__old-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
+    document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
   }
 
 }
