@@ -185,7 +185,7 @@ function generateFiles(sqlContent,sqlRollbackContent){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
-    //location.reload();
+    location.reload();
 }
 
 // - Function triggered when Generate Query button clicked -- //
