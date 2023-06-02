@@ -185,7 +185,7 @@ function generateFiles(sqlContent,sqlRollbackContent){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
-    location.reload();
+    //location.reload();
 }
 
 // - Function triggered when Generate Query button clicked -- //
@@ -200,34 +200,54 @@ function click_submit(){
     generateFiles(sqlContent, sqlRollbackContent);
 
   }else if(userSelection=='2' && validation()){
+    var queries = [];
+    const array = campaign_id.value.split(",");
+    const array2 = old_team_id.value.split(",");
+    tb = "use firewall;\n";
+    queries.push(tb);
+    queries.push(myData.users_to_team.content);
+    var l = array.length;
+    var m = array2.length;
+    for (let i = 0; i < l; i++) {
+      for (let j = 0; j < m; j++) {
+        console.log(l, m);
+        console.log(array[i], array2[j]);
+        sqlContent = "      (" + array[i] + ", " + array2[j] + ")";
+        if (i === l - 1 && j === m - 1) {
+          sqlContent += ";\n";
+        } else {
+          sqlContent += ",\n";
+        }
+        queries.push(sqlContent);
+      }
+    }
 
-    userTeamId = trimfield(old_team_id.value);
-    insertValStr = "";
 
-    const userArray = trimfield(campaign_id.value).split(",");
-    userArray.forEach(joinInsertIDs);
-
-    var result = insertValStr.substring(0,insertValStr.length-2)+";";
-    sqlContent = myData.users_to_team.content + result;
+    new_queries = queries.join("");
     sqlRollbackContent = myData.users_to_team.rollback.replace("${campaign_id}", trimfield(campaign_id.value)).replace("${old_team_id}", trimfield(old_team_id.value));
 
-    generateFiles(sqlContent, sqlRollbackContent);
+    generateFiles(new_queries, sqlRollbackContent);
 
 
   }else if(userSelection=='3' && validation()){
     var queries = [];
     const array = campaign_id.value.split(",");
+    const array2 = old_team_id.value.split(",");
     tb = "use firewall;\n";
     queries.push(tb);
     queries.push(myData.disable_placements.content);
     var l = array.length;
-    for (let i = 0; i< array.length; i++){
-      if(l > 1){
-          sqlContent = "      ("+array[i]+","+old_team_id.value+",0,48344,Now()),\n";
-          queries.push(sqlContent);
-          l = l - 1;
-      }else{
-        sqlContent = "      ("+array[i]+","+old_team_id.value+",0,48344,Now());\n";
+    var m = array2.length;
+    for (let i = 0; i < l; i++) {
+      for (let j = 0; j < m; j++) {
+        console.log(l, m);
+        console.log(array[i], array2[j]);
+        sqlContent = "      (" + array[i] + ", " + array2[j] + ",1,48344,Now())";
+        if (i === l - 1 && j === m - 1) {
+          sqlContent += ";\n";
+        } else {
+          sqlContent += ",\n";
+        }
         queries.push(sqlContent);
       }
     }

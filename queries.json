@@ -6,13 +6,13 @@
     },
     "users_to_team":
     {
-        "content": "use app_user;\nINSERT INTO `user_team` (`user_id`, `team_id`) VALUES ",
-        "rollback": "use app_user;\nDELETE FROM user_team WHERE user_id IN(${campaign_id}) AND team_id=${old_team_id};"
+        "content": "use app_user;\nINSERT INTO `user_team` (`user_id`, `team_id`)\nVALUES\n",
+        "rollback": "use app_user;\nDELETE FROM user_team WHERE user_id IN(${campaign_id}) AND team_id in (${old_team_id});"
     },
     "disable_placements":
     {
         "content": "INSERT INTO `PLACEMENT_DISABLEMENT_LOG` (`PLACEMENT_ID`, `ADSERVER_LOOKUP_ID`, `DISABLED_FL`, `CREATED_BY`, `CREATED_ON`)\nVALUES\n",
-        "rollback": "use firewall;\nDELETE FROM `PLACEMENT_DISABLEMENT_LOG` where PLACEMENT_ID in(${campaign_id}) AND DISABLED_FL=0"
+        "rollback": "use firewall;\nDELETE FROM `PLACEMENT_DISABLEMENT_LOG` where PLACEMENT_ID in(${campaign_id}) AND DISABLED_FL=1"
     },
     "reset_user": 
     {
