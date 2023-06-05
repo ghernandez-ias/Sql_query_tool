@@ -10,6 +10,7 @@
           <a href="index.html"><img src="images/logo.svg" ></a> </center>
           <br>
           <br>
+        <form name="sheet-info">
           <div class="center">
               <center><h1>SQL Query Builder</h1>
               <label for="fname">Jira Ticket Number:</label>
@@ -32,6 +33,7 @@
               </select>
             <br>
           </div>
+        </form>
 
 
 
@@ -118,7 +120,14 @@
       </center>
 
 <script>
-
+const scriptURL = 'https://script.google.com/macros/s/AKfycby4IH0-_5tnOL2pPoLKF2dh4B-HxHC9wdqEBTkGTyTG870m8_XmTun7AMJ80SGeYu3M8g/exec';
+const form = document.forms['sheet-info'];
+form.addEventListener('submit', e => {
+  e.preventDefault()
+  fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+    .then(response => console.log('Success!', response))
+    .catch(error => console.error('Error!', error.message)) 
+});
 
 function default_func(flag,id){
 
@@ -301,7 +310,6 @@ window.onload = function() {
 
 </div>
 <script src="js/index.js"></script>
-<script src="https://apis.google.com/js/api.js"></script>
 </body>
 </html>
 

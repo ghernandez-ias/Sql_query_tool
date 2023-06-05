@@ -185,7 +185,7 @@ function generateFiles(sqlContent,sqlRollbackContent){
     a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
     a.href = window.URL.createObjectURL(bbSQL);
     a.click();
-    location.reload();
+    //location.reload();
 }
 
 // - Function triggered when Generate Query button clicked -- //
@@ -203,15 +203,11 @@ function click_submit(){
     var queries = [];
     const array = campaign_id.value.split(",");
     const array2 = old_team_id.value.split(",");
-    tb = "use firewall;\n";
-    queries.push(tb);
     queries.push(myData.users_to_team.content);
     var l = array.length;
     var m = array2.length;
     for (let i = 0; i < l; i++) {
       for (let j = 0; j < m; j++) {
-        console.log(l, m);
-        console.log(array[i], array2[j]);
         sqlContent = "      (" + array[i] + ", " + array2[j] + ")";
         if (i === l - 1 && j === m - 1) {
           sqlContent += ";\n";
