@@ -132,7 +132,6 @@ lbl_no.style.display='block';
 document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
 
   }else if(userSelection=='2'){
-
     default_func('show','2');
     document.querySelector(`#group__new-team .form__input-error`).classList.remove("form__input-error-active");
     document.querySelector(`#group__disable .form__input-error`).classList.remove("form__input-error-active");
