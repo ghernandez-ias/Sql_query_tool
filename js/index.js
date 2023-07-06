@@ -172,19 +172,21 @@ function joinInsertIDs(item, index) {
 }
 
 function generateFiles(sqlContent,sqlRollbackContent){
-    bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
+  bbSQL = new Blob([sqlContent ], { type: 'text/plain' });
+  a = document.createElement('a');
+  a.download = trimfield(jiraid.value)+'_Firewall_Update.sql';
+  a.href = window.URL.createObjectURL(bbSQL);
+  a.click();
 
 
-    bbSQL = new Blob([sqlRollbackContent ], { type: 'text/plain' });
-    a = document.createElement('a');
-    a.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
-    a.href = window.URL.createObjectURL(bbSQL);
-    a.click();
-    //location.reload();
+  bbSQL2 = new Blob([sqlRollbackContent ], { type: 'text/plain' });
+  b = document.createElement('a');
+  b.download = trimfield(jiraid.value)+'_Firewall_Update_ROLLBACK.sql';
+  b.href = window.URL.createObjectURL(bbSQL2);
+  b.click();
+  console.log(jiraid.value);
+  attachFilesToJiraTicket(bbSQL,bbSQL2, jiraid.value);
+  //location.reload();
 }
 
 // - Function triggered when Generate Query button clicked -- //
@@ -390,4 +392,37 @@ lbl_yes.style.display='none';
 lbl_no.style.display='none';
   default_func('show','1');
    }
+}
+function attachFilesToJiraTicket(sqlFile1, sqlFile2, ticket_id) {
+  // Generate or obtain the SQL files to be attached
+  const token = 'NDYxNzgzMTQ5NzI0OqQ4n8dIWvYx77Kii5LCBG/0XBUs';
+  const basicAuth = 'Basic ' + btoa(`username:${token}`);
+  // Prepare the form data or payload
+  const formData = new FormData();
+  formData.append('file1', sqlFile1, 'file1.sql');
+  formData.append('file2', sqlFile2, 'file2.sql');
+
+  // Make the POST request to the Jira API
+  fetch(`https://jira.integralads.com/rest/api/2/issue/${ticket_id}/attachments`, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth,
+    },
+    body: formData,
+  })
+  .then(response => {
+    if (response.ok) {
+      // Attachment successful
+      console.log('Files attached to Jira ticket');
+    } else {
+      // Attachment failed
+      console.error('Failed to attach files to Jira ticket');
+    }
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error('Error occurred while attaching files:', error);
+  });
 }
