@@ -395,7 +395,7 @@ lbl_no.style.display='none';
 }
 function attachFilesToJiraTicket(sqlFile1, sqlFile2, ticket_id) {
   // Generate or obtain the SQL files to be attached
-  const token = 'NDYxNzgzMTQ5NzI0OqQ4n8dIWvYx77Kii5LCBG/0XBUs';
+  
   const basicAuth = 'Basic ' + btoa(`username:${token}`);
   // Prepare the form data or payload
   const formData = new FormData();
